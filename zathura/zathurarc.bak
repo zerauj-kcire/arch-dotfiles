@@ -1,0 +1,76 @@
+
+#  ████████             ██   ██                              
+# ░░░░░░██             ░██  ░██                              
+#      ██    ██████   ██████░██      ██   ██ ██████  ██████  
+#     ██    ░░░░░░██ ░░░██░ ░██████ ░██  ░██░░██░░█ ░░░░░░██ 
+#    ██      ███████   ░██  ░██░░░██░██  ░██ ░██ ░   ███████ 
+#   ██      ██░░░░██   ░██  ░██  ░██░██  ░██ ░██    ██░░░░██ 
+#  ████████░░████████  ░░██ ░██  ░██░░██████░███   ░░████████
+# ░░░░░░░░  ░░░░░░░░    ░░  ░░   ░░  ░░░░░░ ░░░     ░░░░░░░░ 
+
+# Scroll settings.
+set scroll-step 100
+
+# Scroll mapings.
+# Move normally
+unmap h
+map  j scroll left
+map  k scroll down
+map  l scroll up
+map ntilde scroll right
+map { scroll right
+# INDEX MODE
+map [index] j navigate_index collapse
+map [index] <C-K> navigate_index expand-all
+map [index] <C-L> navigate_index collapse-all
+map [index] k navigate_index down
+map [index] l navigate_index up
+map [index] { navigate_index expand
+map [index] K navigate_index bottom
+map [index] L navigate_index top
+# map ñ scroll right
+	#	Move pages
+unmap H
+unmap J
+unmap K
+unmap L
+map [normal] J navigate left
+map [normal] K navigate next
+map [normal] L navigate previous
+map [normal] [ navigate right
+map [normal] F navigate left
+map [normal] D navigate next
+map [normal] S navigate previous
+map [normal] A navigate right
+
+# Inverse colors.
+map i recolor
+set recolor               "true"
+# set recolor-reverse-video "true"
+set recolor-keephue "true"
+# set recolor-lightcolor "rgba(1,1,1, 0.1)"
+
+# Title on bars
+set window-title-basename "true"
+set statusbar-basename "true"
+# set guioptions none
+
+# Copy Text
+set selection-clipboard clipboard
+
+# Font
+set font "VictorMono Nerd Font"
+
+# Color
+set default-bg "#000000"
+set default-fg "#FFFFFF"
+# set recolor-darkcolor \#000000
+# set statusbar-bg "#000000"
+# set statusbar-fg "#FFFFFF"
+
+# Keybindings
+# map <C-d> ":exec kitty 'lfub $(dirname $FILE)'"
+map <C-n> feedkeys ":exec zathura $FILE<Return>"
+
+# BROWSER
+set sandbox none

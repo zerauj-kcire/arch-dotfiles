@@ -1,0 +1,21 @@
+let g:quicktex_manim = {
+			\' '   : "\<ESC>:call search('<++>')\<CR>\"_c/+>/e\<CR>",
+			\'arr' : "np.array(<+++> , <++>) <++>",
+      \'cl' : "class <+++>:",
+      \'f' : "f\"<+++>\"",
+      \'for' : "for <+++> in <++>:",
+			\'fun' : "from functions import *",
+      \'he' : "help(<+++>)",
+      \'im' : "import ",
+      \'im1' : "import <+++> as <++>",
+      \'ini' : "def __init__(self,<+++>):",
+      \'op' : "open(\"<+++>\")",
+      \'ran' : "range(<+++>, <++>)",
+      \'rand' : "random.choice(<+++>)",
+      \'ret' : "return ",
+      \'sec' : "# === <+++> === (((\n<++>\n# )))",
+			\
+			\'par' : "ParametricFunction(self.<+++> , t_range = np.array([0, <++>]) , fill_opacity=).set_color(<++>)",
+			\'fung' : "FunctionGraph(\nlambda t: <+++> ,\ncolor=<++>,\n)",
+			\'imp' : "ImplicitFunction(self.<+++> , x_range = np.array([0, <++>]) y_range = np.array([0, <++>]) , fill_opacity=).set_color(<++>) <++>",
+			\}

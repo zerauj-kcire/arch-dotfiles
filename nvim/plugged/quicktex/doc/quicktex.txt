@@ -1,0 +1,219 @@
+*quicktex.txt* a template expander focused on typing Latex
+
+Author:  Bennett Rennier <http://brennier.com>
+
+                     ____        _      _ _______         ~
+                    / __ \      (_)    | |__   __|        ~
+                   | |  | |_   _ _  ___| | _| | _____  __ ~
+                   | |  | | | | | |/ __| |/ / |/ _ \ \/ / ~
+                   | |__| | |_| | | (__|   <| |  __/>  <  ~
+                    \___\_\\__,_|_|\___|_|\_\_|\___/_/\_\ ~
+
+===============================================================================
+Contents                                                       *QuickTexContents*
+
+    1. Introduction ................... |QuickTexIntro|
+    2. Usage .......................... |QuickTexUsage|
+    3. Configuration .................. |QuickTexConfig|
+        i) Creating a dictionary ...... |QuickTexDictionaries|
+        ii) Other variables ........... |QuickTexVariables|
+    4. License ........................ |QuickTexLicense|
+    5. Bugs ........................... |QuickTexBugs|
+    6. Changelog ...................... |QuickTexChangelog|
+    7. Credit ......................... |QuickTexCredit|
+
+
+===============================================================================
+Section 1: Intro                                                  *QuickTexIntro*
+
+Basically, QuickTex allows you to set keywords which activate arbitrary Vim
+code whenever they are typed in insert mode. The expansions are filetype
+specifc and are triggered by pressing space. In most respects, you can think
+of it like a much improved version of Vim abbreviations.
+
+Some key differences between QuickTex and Vim abbreviations are:
+    1. QuickTex has context dependent expansions for keywords typed in math
+       mode. This is probably the most important feature.
+    2. QuickTex keywords are only expanded after a space.
+    3. QuickTex only works in Insert mode.
+    4. QuickTex supports cursor placement and jumping forward.
+    5. QuickTex is much faster if you use many keywords.
+    6. It's easier to add entries to QuickTex.
+    7. QuickTex has filetype dependence.
+
+===============================================================================
+Section 2: Usage                                                  *QuickTexUsage*
+
+The usage of this plugin is pretty easy. You set some dictionaries consisting
+of keywords and their expansions which are named g:quicktex_{filetype}. Then,
+whenever you open up a file of the appropriate filetype, type out that keyword,
+and press space, then you should see you keyword expanded into its
+corresponding expansion. This is very useful for automating boilerplate code.
+I recommend that your keywords be alphabetical, short, and resemble actual
+words (though, not actual words, otherwise you might accidentally expand
+something you don't want to). This will ensure the fastest typing speed.
+
+The main point of this program, though, are the math mode-specific expansions
+which should be stored in a dictionary called g:quicktex_math. This dictionary
+is used instead of the g:quicktex_tex dictionary whenever you are inside math
+delimiters. Since you don't typically type words inside math mode, I recommend
+that your keywords in this dictionary be actual words. If you set enough
+keywords up, this will allow you to essentially type in English (or whatever
+language you with) and have your words be expanded into Latex in real-time.
+Pretty cool, eh? =P
+
+===============================================================================
+Section 3: Configuration                                         *QuickTexConfig*
+
+-------------------------------------------------------------------------------
+Subsection (i): Creating a dictionary                      *QuickTexDictionaries*
+
+There are two types of dictionaries. They are of the form:
+
+g:quicktex_math
+        Type: Dictionary
+        Default Value: See <ftplugin/tex/default_keywords>
+
+        Whenever a keyword in this dictionary is typed inside math mode
+        delimiters in a tex file, then the keyword is deleted and replaced
+        with its value in this dictionary. Keywords cannot include spaces,
+        with the exception of the keyword ' ', which is called whenever you
+        hit space after a space. Unlike other dictionaries, keywords also
+        cannot include "{" or "(".
+
+g:quicktex_{filetype}
+        Type: Dictionary
+        Default Value: See <ftplugin/tex/default_keywords>
+
+        Whenever a keyword in this dictionary is typed
+        inside a file with type {filetype}, then the keyword is deleted and
+        replaced with its value in this dictionary. Keywords cannot include
+        spaces, with the exception of the keyword ' ', which is called whenever
+        you hit space after a space.
+
+Example dictionaries:
+
+    let g:vimtexer_tex = { ~
+        \' '   : "\<ESC>/<+.*+>\<CR>\"_c/+>/e\<CR>", ~
+        \'m'   : '\( <+++> \) <++>', ~
+        \'prf' : "\\begin{proof}\<CR><+++>\<CR>\\end{proof}", ~
+    \} ~
+    let g:vimtexer_math = { ~
+        \' '    : "\<ESC>/<+.*+>\<CR>\"_c/+>/e\<CR>", ~
+        \'fr'   : '\mathcal{R} ', ~
+        \'eq'   : '= ', ~
+        \'set'  : '\{ <+++> \} <++>', ~
+        \'frac' : '\frac{<+++>}{<++>} <++>', ~
+        \'one'  : '1 ', ~
+        \'st'   : ': ', ~
+        \'in'   : '\in ', ~
+        \'bn'   : '\mathbb{N} ', ~
+    \} ~
+
+Further explanation:
+
+If there is a `<+++>` anywhere in the expansion, then your cursor will
+automatically jump to that point after the expansion is triggered. Also, while
+not strictly necessary, I highly advise adding the
+`\' ' : "\<ESC>/<+.*+>\<CR>\"_c/+>/e\<CR>"`, entry, which will allow you
+automatically jump to the next `<++>` if you press space after a space. You may
+think this would be annoying to map double space to this, but it's actually
+extremely useful and doesn't get in the way as much as you'd think. Using this
+entry, you can put `<++>`'s in your other expansions to jump around very easily.
+
+Keywords can be any string without whitespace. Expansions can either be a
+literal string (using single quotes) or a string with keypress expansions
+(using double quotes). Keypress expansions are things like `\<CR>`, `\<BS>`, or
+`\<Right>` that one would find in vim remappings. Keep in mind that `\`'s need to
+be escaped (i.e. `\\`) when using double quoted strings and that you need a `\` at
+the beginning of each line of your dictionary.
+
+For more ideas about what to include your dictionary, please take a look at
+the default dictionaries in ftplugin/tex/default_keywords.vim. It is highly
+recommended that you make your own custom dictionaries, as the default
+dictionaries may change without warning.
+
+-------------------------------------------------------------------------------
+Subsection (ii): Other Variables                              *QuickTexVariables*
+
+Here are the variables that you can set to configure QuickTex:
+
+g:quicktex_usedefault
+        Type: Boolean
+        Default Value: 1
+
+        If set to 0, then QuickTex will not use it's default dictionaries for
+        Latex files. Keep in mind that making a Latex dictionary automatically
+        overrides the default dictionaries. This option is for people who want
+        to use QuickTex for other types of files, but don't want to use it for
+        Latex files.
+
+g:quicktex_trigger
+        Type: String
+        Default Value: " "
+
+        This sets the default value for the trigger. Currently acceptable
+        values are " ", any sequence of alphanumerical characters, and "\t"
+        for tab. If you'd like support for another, please file it as a bug.
+        See |QuickTexBugs| for more information on this. Also, keep in mind
+        that you may need to modify your jumping keyword if you change this
+        value.
+
+g:quicktex_excludechar
+        Type: List of Strings
+        Default Value: ['{', '(', '[']
+
+        Characters in this list are excluded from being in keywords. After
+        every space typed, Quicktex will check if the characters between your
+        cursor and the last valid character is a keyword (whitespace is never
+        considered a valid character). The default value allows keywords to
+        still be executed even if they are adjacent to an opening parenthesis,
+        bracket, or brace.
+
+===============================================================================
+Section 4: License                                              *QuickTexLicense*
+
+The license that QuickTex uses is the same as the terms for Vim itself. To see
+a copy of this license, please refer to |license|.
+
+===============================================================================
+Section 5: Bugs                                                    *QuickTexBugs*
+
+Known bugs at the moment are:
+    1. $ signs are still counted as opening/closing a math mode, even if they
+    are in a comment.
+
+If you have found a bug, please submit it to the github page at
+<http://github.com/brennier/quicktex>
+
+===============================================================================
+Section 7: Changelog                                          *QuickTexChangelog*
+
+QuickTex 1.2
+    1. Major speed improvements
+    2. Autoloading all functions
+    3. Support for `$ $` and `$$ $$` math modes
+    4. Jumping is a keyword instead of a function
+    5. This documentation
+    6. Support for alternative triggers
+
+QuickTex 1.1
+    1. Support for other filetypes
+    2. Support for many different types of math modes (not `$ $`, though)
+    3. Removed bugs concerning expansions after { and \
+    4. Improved code aesthetics
+    5. Delimit math keywords by a space, {, (, [, or "
+    6. Updated default dictionaries
+
+QuickTex 1.0
+    1. Initial release
+
+===============================================================================
+Section 8: Credit                                                *QuickTexCredit*
+
+I doubly thank Srinath Avadhanula for providing a majority of the inspiration
+of this plugin. For those who don't recognize his name, he is the creator of
+the plugin "Latex-Suite" as well as "Improved IMAPS". QuickTex has taken quite
+a few elements from both of these plugins, which is why he is doubly thanked.
+I also want to credit Ultisnips and other snippet programs for their general
+inspiration as well.

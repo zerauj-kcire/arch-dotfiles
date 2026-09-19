@@ -1,0 +1,112 @@
+### Settings from original zathurarc ###
+set scroll-step 100
+# map ntilde scroll right
+# map { scroll right
+map [index] j navigate_index collapse
+map [index] <C-K> navigate_index expand-all
+map [index] <C-L> navigate_index collapse-all
+map [index] k navigate_index down
+map [index] l navigate_index up
+map [index] ñ navigate_index expand
+map [index] K navigate_index bottom
+map [index] L navigate_index top
+unmap H
+unmap J
+unmap K
+unmap L
+unmap h
+unmap j
+unmap k
+unmap l
+map j scroll left
+map k scroll down
+map l scroll up
+map ñ scroll right
+map [normal] J navigate left
+map [normal] K navigate next
+map [normal] L navigate previous
+map [normal] [ navigate right
+map [normal] F navigate left
+map [normal] D navigate next
+map [normal] S navigate previous
+map [normal] A navigate right
+set window-title-basename "true"
+set statusbar-basename "true"
+set selection-clipboard clipboard
+set font "VictorMono Nerd Font"
+map <C-n> feedkeys ":exec zathura $FILE<Return>"
+set sandbox none
+
+### zathura-pywal ###
+# Allow recolor
+set recolor 'true'
+
+# Don't allow original hue when recoloring
+set recolor-keephue 'true'
+
+# Don't keep original image colors while recoloring
+set recolor-reverse-video 'false'
+
+# Command line completion entries
+set completion-fg '#c7cae1'
+set completion-bg '#0d0d16'
+
+# Command line completion group elements
+set completion-group-fg '#6F6F8E'
+set completion-group-bg '#0d0d16'
+
+# Current command line completion element
+set completion-highlight-fg '#0d0d16'
+set completion-highlight-bg '#c7cae1'
+
+# Default foreground/background color
+set default-bg rgba(0,0,0,0.8)
+# set default-bg rgba(13,13,13,0.9)
+
+# Input bar
+set inputbar-fg '#c7cae1'
+set inputbar-bg '#0d0d16'
+
+# Notification
+set notification-fg '#c7cae1'
+set notification-bg '#0d0d16'
+
+# Error notification
+set notification-error-fg '#c7cae1'
+set notification-error-bg '#5B6F8B'
+
+# Warning notification
+set notification-warning-fg '#c7cae1'
+set notification-warning-bg '#5B6F8B'
+
+# Tab - TODO
+# set tabbar-fg
+# set tabbar-bg
+
+# Focused tab - TODO
+# set tabbar-focus-fg
+# set tabbar-focus-bg
+
+# Status bar
+set statusbar-fg '#c7cae1'
+set statusbar-bg '#0d0d16'
+
+# Highlighting parts of the document (e.g. show search results)
+set highlight-color '#6F6F8E'
+set highlight-active-color '#6F6F8E'
+
+# Represent light/dark colors in recoloring mode
+set recolor-lightcolor rgba(0,0,0,0)
+set recolor-darkcolor '#c7cae1'
+
+# 'Loading...' text
+set render-loading-fg '#c7cae1'
+set render-loading-bg '#0d0d16'
+
+# Index mode
+set index-fg '#c7cae1'
+set index-bg '#0d0d16'
+
+# Selected element in index mode
+set index-active-fg '#0d0d16'
+set index-active-bg '#c7cae1'
