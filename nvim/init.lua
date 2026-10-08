@@ -11,5 +11,4 @@
 require('maps')
 require('settings')
 require('plugins')
-require('color-picker')
 require('colors')

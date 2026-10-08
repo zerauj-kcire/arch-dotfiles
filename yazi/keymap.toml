@@ -21,7 +21,7 @@ keymap = [
 	{ on = "<Down>", run = "arrow next", desc = "Next file" },
 
 	{ on = "<C-u>", run = "arrow -50%",  desc = "Move cursor up half page" },
-	{ on = "<C-d>", run = "arrow 50%",   desc = "Move cursor down half page" },
+	# { on = "<C-d>", run = "arrow 50%",   desc = "Move cursor down half page" },
 	{ on = "<C-b>", run = "arrow -100%", desc = "Move cursor up one page" },
 	{ on = "<C-f>", run = "arrow 100%",  desc = "Move cursor down one page" },
 
@@ -80,9 +80,9 @@ keymap = [
 	{ on = ";",         run = "shell --interactive",         desc = "Run a shell command" },
 	{ on = ":",         run = "shell --block --interactive", desc = "Run a shell command (block until finishes)" },
 	{ on = ".",         run = "hidden toggle",               desc = "Toggle the visibility of hidden files" },
-	{ on = "s",         run = "search --via=fd",             desc = "Search files by name via fd" },
-	{ on = "S",         run = "search --via=rg",             desc = "Search files by content via ripgrep" },
-	{ on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
+	# { on = "s",         run = "search --via=fd",             desc = "Search files by name via fd" },
+	# { on = "S",         run = "search --via=rg",             desc = "Search files by content via ripgrep" },
+	# { on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
 	{ on = "z",         run = "plugin fzf",                  desc = "Jump to a file/directory via fzf" },
 	{ on = "Z",         run = "plugin zoxide",               desc = "Jump to a directory via zoxide" },
 
@@ -101,10 +101,10 @@ keymap = [
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy filename without extension" },
 
 	# Filter
-	{ on = "f", run = "filter --smart", desc = "Filter files" },
+	{ on = "/", run = "filter --smart", desc = "Filter files" },
 
 	# Find
-	{ on = "/", run = "find --smart",            desc = "Find next file" },
+	{ on = "f", run = "find --smart",            desc = "Find next file" },
 	{ on = "?", run = "find --previous --smart", desc = "Find previous file" },
 	{ on = "n", run = "find_arrow",              desc = "Next found" },
 	{ on = "N", run = "find_arrow --previous",   desc = "Previous found" },
@@ -161,6 +161,10 @@ keymap = [
 ]
 
 [tasks]
+
+prepend_keymap = [
+  { on = "<C-d>", run = "dragon %s", desc = "Drag and Drop source/sink on selected files" },
+] 
 
 keymap = [
 	{ on = "<Esc>", run = "close", desc = "Close task manager" },

@@ -16,11 +16,13 @@ function! quicktex#expand#ExpandWord(ft)
     " If the filetype is tex and you're in mathmode, then use that dictionary.
     " Otherwise, use the filetype dictionary. If there is no entry, just set
     " result to ''.
-    " if (a:ft == 'tex' || a:ft == 'pandoc' || a:ft == 'markdown') && quicktex#mathmode#InMathMode()
-    if (a:ft == 'tex') && quicktex#mathmode#InMathMode()
+    if exists('g:quicktex_math') && index(g:quicktex_math_filetypes, a:ft)+1
+    \ && quicktex#mathmode#InMathMode()
         let result = get(g:quicktex_math, word, '')
-    else
+    elseif exists('g:quicktex_' . a:ft)
         execute('let result = get(g:quicktex_'.a:ft.', word, "")')
+    else
+        let result = ''
     endif
 
     " If there is no result found in the dictionary, then return the original

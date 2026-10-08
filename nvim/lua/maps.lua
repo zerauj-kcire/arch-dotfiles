@@ -85,7 +85,7 @@ map('n', '<C-q>', '<nop>')
 map('','<M-a>',":!column -t -s ''<left>")
 
 map('','s',':s///g<left><left><left>')
-map('','<C-s>','"cyE:s///g<left><left><left><C-r>c<right>')
+map('','<C-s>','"cye:%s///g<left><left><left><C-r>c<right>')
 map('n','S',':%s///g<left><left><left>', false)
 map('i','<C-BS>','<Esc>BcW')
 
@@ -341,9 +341,10 @@ au_m("FileType", Rg, "text", function() map('n', '<C-b>', "ggVG:'<,'>'<'>!column
 local Py = api.nvim_create_augroup("Pythongroup", {clear = true})
 
 au_m("FileType", Py, "python", function() map('n', '<M-p>', ':au BufWritePost *.py silent !python3 % > output.txt<CR>',false) end)
-au_m("FileType", Py, "python", function() map('n', '<M-t>', ':vs<CR>:term<CR>Apython3<CR><Esc>:set wrap<CR>:set nornu nonu<CR><M-j>',false) end)
-au_m("FileType", Py, "python", function() map('n', '<M-c>', ':sp<CR>:term<CR>Apython3<CR><Esc>:set wrap<CR>:set nornu nonu<CR><M-l>',false) end)
+au_m("FileType", Py, "python", function() map('n', '<M-t>', ':vs<CR>:term<CR>Apython3 *.py<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR><M-j>',false) end)
+au_m("FileType", Py, "python", function() map('n', '<M-c>', ':sp<CR>:term<CR>Apython3 *.py<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR><M-l>',false) end)
 au_m("FileType", Py, "python", function() map('n', '<M-e>', ':au BufWritePost *.py !python3 % > output.txt<CR>',false) end)
+au_m("FileType", Cg, {"python"},  function() map('n', '<M-CR>', ':w<CR><C-W>piclear<CR>python3 *.py<CR><C-\\><C-N>gg<C-w>p', false) end)
 
 au_m("FileType", Py, "python", function() map('n', '<C-o>', ':vs output.txt<CR>',false) end)
 
@@ -361,11 +362,20 @@ au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-t>', ':vs<CR>:term<CR><Es
 au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-c>', ':sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>ig++ -Wall *.cpp -o compilacion && ./compilacion<CR>', false) end)
 au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-CR>', ':w<CR>iclear<CR>g++ -Wall *.cpp -o compilacion && ./compilacion<CR>', false) end)
 
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-t>', ':vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra *.c -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-c>', ':sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra *.c -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-CR>', ':w<CR><C-W>piclear<CR>gcc -Wall -Wextra *.c -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+-- compilation and execution
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 
-au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<C-q>', '<Esc>iexit<CR>') end)
+-- compilation only
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+
+-- au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<C-q>', '<C-\\><C-N>Aexit<CR>') end)
+au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
+au_m("FileType", Cg, {"c", "cpp"},  function() map('n', '<C-q>', '<C-\\><C-N>Aexit<CR>') end)
+-- au_m("FileType", Cg, {"c", "cpp"},  function() map('n', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
 -- )))
 
 -- === OCTAVE === (((
