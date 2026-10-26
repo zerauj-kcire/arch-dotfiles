@@ -57,7 +57,7 @@ set rulerformat=%60(%p%%\ \%=[%<\ \%{Stl_filename()}\ \]\ \%m\ \%=%Y%)
 vim.cmd([[hi FloatBorder guibg=NONE]])
 -- o.shortmess = 'a'
 o.cmdheight = 2
-vim.cmd([[set shell=bash\ -i]])
+-- vim.cmd([[set shell=bash\ -i]])
 -- )))
 
 -- === CURSOR EN EL CENTRO === (((
@@ -94,7 +94,7 @@ bo.swapfile = false
 -- === FUNCTION TO COMMENT FILES === (((
 vim.cmd([[
 let s:comment_map = { 
-    \   "ahk": ';',
+    \   "awk": ';',
 		\   "beamer" : "%",
     \   "bash_profile": '#',
     \   "bashrc": '#',
@@ -114,6 +114,7 @@ let s:comment_map = {
     \   "mail": '>',
 		\   "manim" : '#',
 		\   "matlab" : "%",
+		\   "postscr": '%',
     \   "php": '\/\/',
     \   "profile": '#',
     \   "python": '#',

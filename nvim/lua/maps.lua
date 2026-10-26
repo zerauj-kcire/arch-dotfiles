@@ -277,6 +277,12 @@ map('n','<M-L>',':resize +3<CR>')
 g.sendtowindow_use_defaults = 1
 -- )))
 
+-- === POSTSCRIPT === (((
+local PS = api.nvim_create_augroup("PSgroup", { clear = true })
+au_m("FileType", PS, "postscr", function() map('n' , '<C-a>', ':!zathura %:r.pdf & <CR>', false) end)
+au_c("BufWritePost", PS, "*.ps" , 'silent ! ps2pdf %')
+-- )))
+
 -- === LaTeX === (((
 local TeX = api.nvim_create_augroup("TeXgroup", { clear = true })
 au_m("FileType", TeX, "tex", function()	map('n' , '<C-a>', ':!zathura<space>%:r.pdf<space>&<Enter><CR>', false) end)
@@ -363,14 +369,14 @@ au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-c>', ':sp<CR>:term<CR><Es
 au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-CR>', ':w<CR>iclear<CR>g++ -Wall *.cpp -o compilacion && ./compilacion<CR>', false) end)
 
 -- compilation and execution
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out && ./comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 
 -- compilation only
-au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o comp.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 
 -- au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<C-q>', '<C-\\><C-N>Aexit<CR>') end)
 au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
