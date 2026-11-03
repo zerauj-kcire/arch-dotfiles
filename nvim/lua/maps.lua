@@ -240,7 +240,7 @@ map('i','<C-lt>','<')
 -- map('i','','[] <++><Esc>6ha')
 -- map('i','{','{} <++><Esc>6ha')
 -- Disable double
-map('n', '<C-i>', ":iu \"<CR>:iu '<CR>:iu (<CR>:iu [<CR>:iu {<CR>:iu ¿<CR>:iu <<CR>")
+-- map('n', '<C-i>', ":iu \"<CR>:iu '<CR>:iu (<CR>:iu [<CR>:iu {<CR>:iu ¿<CR>:iu <<CR>")
 -- cmd([[nmap <S-Tab> :exec printf("imap \" \"\" <++>\<Esc>6ha<CR> imap ' '' <++>\<Esc>6ha<CR> imap ( () <++>\<Esc>6ha<CR> imap [ [] <++>\<Esc>6ha<CR> imap { {} <++>\<Esc>6ha<CR> imap ¿¿? <++>\<Esc>6ha<CR> imap < <> <++>\<Esc>6ha<CR>")]])
 -- )))
 
@@ -280,7 +280,8 @@ g.sendtowindow_use_defaults = 1
 -- === POSTSCRIPT === (((
 local PS = api.nvim_create_augroup("PSgroup", { clear = true })
 au_m("FileType", PS, "postscr", function() map('n' , '<C-a>', ':!zathura %:r.pdf & <CR>', false) end)
-au_c("BufWritePost", PS, "*.ps" , 'silent ! ps2pdf %')
+au_c("BufWritePost", PS, "*.ps" , 'silent ! ps2pdf % 2> %:r.log')
+au_m("FileType", PS, "postscr", function() map('n', '<C-o>', ':5sp %:r.log<CR>', false) end)
 -- )))
 
 -- === LaTeX === (((
@@ -350,7 +351,7 @@ au_m("FileType", Py, "python", function() map('n', '<M-p>', ':au BufWritePost *.
 au_m("FileType", Py, "python", function() map('n', '<M-t>', ':vs<CR>:term<CR>Apython3 *.py<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR><M-j>',false) end)
 au_m("FileType", Py, "python", function() map('n', '<M-c>', ':sp<CR>:term<CR>Apython3 *.py<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR><M-l>',false) end)
 au_m("FileType", Py, "python", function() map('n', '<M-e>', ':au BufWritePost *.py !python3 % > output.txt<CR>',false) end)
-au_m("FileType", Cg, {"python"},  function() map('n', '<M-CR>', ':w<CR><C-W>piclear<CR>python3 *.py<CR><C-\\><C-N>gg<C-w>p', false) end)
+au_m("FileType", Py, {"python"},  function() map('n', '<M-CR>', ':w<CR><C-W>piclear<CR>python3 *.py<CR><C-\\><C-N>gg<C-w>p', false) end)
 
 au_m("FileType", Py, "python", function() map('n', '<C-o>', ':vs output.txt<CR>',false) end)
 
@@ -372,7 +373,7 @@ au_m("FileType", Cg, {"cpp"},  function() map('n', '<M-CR>', ':w<CR>iclear<CR>g+
 au_m("FileType", Cg, {"c"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 au_m("FileType", Cg, {"c"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 au_m("FileType", Cg, {"c"},  function() map('n', '<M-CR>', ':w<CR>:let @1 = @%<CR><C-W>piclear<CR>gcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out && ./<C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
-
+ 
 -- compilation only
 au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
 au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><C-\\><C-N>:set wrap<CR>:set nornu nonu<CR>igcc -Wall -Wextra <C-\\><C-N>"1pA -o <C-\\><C-N>"1pa.out<CR><C-\\><C-N>gg<C-w>p', false) end)
@@ -382,6 +383,24 @@ au_m("FileType", Cg, {"c"},  function() map('n', '<C-M-CR>', ':w<CR>:let @1 = @%
 au_m("FileType", Cg, {"c", "cpp"},  function() map('t', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
 au_m("FileType", Cg, {"c", "cpp"},  function() map('n', '<C-q>', '<C-\\><C-N>Aexit<CR>') end)
 -- au_m("FileType", Cg, {"c", "cpp"},  function() map('n', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
+-- )))
+
+-- === AWK === (((
+local Awk = api.nvim_create_augroup("Awkgroup", {clear = true})
+au_m("FileType", Awk, {"text", "d", "data"},  function() map('n', '<C-i>',  ':w<CR>:let @b = @%<CR>', false) end)
+au_m("FileType", Awk, {"text", "d", "data"},  function() map('n', '<M-i>',  ':w<CR>:let @b = @%<CR>', false) end)
+
+-- au_m("FileType", Awk, {"awk"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igawk -f <C-\\><C-N>"1pA <C-\\><C-N>"2pa<CR><C-\\><C-N>gg<C-w>p', false) end)
+-- au_m("FileType", Awk, {"awk"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igawk -f <C-\\><C-N>"1pA <C-\\><C-N>"2pa<CR><C-\\><C-N>gg<C-w>p', false) end)
+
+au_m("FileType", Awk, {"awk"},  function() map('n', '<M-t>',  ':w<CR>:let @a = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR><C-w>p', false) end)
+au_m("FileType", Awk, {"awk"},  function() map('n', '<M-c>',  ':w<CR>:let @a = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR><C-w>p', false) end)
+au_m("FileType", Awk, {"awk"},  function() map('n', '<M-CR>', ':w<CR><C-W>piclear<CR>gawk -f <C-\\><C-N>"apA <C-\\><C-N>"bpa<CR><C-\\><C-N>gg<C-w>p', false) end)
+
+au_m("FileType", Awk, "awk", function() map('n', '<C-o>', ':11sp %:r-<C-r>"bpa.out<CR>', false) end)
+
+au_m("FileType", Awk, {"awk"},  function() map('t', '<Esc>', '<C-\\><C-N>gg<C-w>p') end)
+au_m("FileType", Awk, {"awk"},  function() map('n', '<C-q>', '<C-\\><C-N>Aexit<CR>') end)
 -- )))
 
 -- === OCTAVE === (((
@@ -422,17 +441,8 @@ au_m("FileType", INFO, 'info', function () map('n', '<C-s>', "vip:'<,'>norm I [/
 -- -- )))
 
 -- === TXT === (((
-local TXT = api.nvim_create_augroup("Txtgroup", {clear = true})
-au_c('BufReadPost', TXT, '*.txt', "set ft=python")
+-- local TXT = api.nvim_create_augroup("Txtgroup", {clear = true})
+-- au_c('BufReadPost', TXT, '*.txt', "set ft=python")
 -- cmd([[au Syntax txt runtime! syntax/python.vim]])
 -- cmd([[au BufNewFile,BufRead *.txt set syntax=python]])
 -- -- )))
-
--- === COLOR PICKER === (((
-	--
-map('i', '<M-P>', '<cmd>PickColorInsert<CR>', false)
-map('n', '<M-P>', '<cmd>PickColor<CR>', false)
-map('n', '<M-C>', '<cmd>ConvertHEXandRGB<CR>', false)
-
--- map('n', '<M-C>', '<cmd>ConvertHEXandHSL<CR>', false)
--- )))

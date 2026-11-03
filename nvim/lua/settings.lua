@@ -94,7 +94,7 @@ bo.swapfile = false
 -- === FUNCTION TO COMMENT FILES === (((
 vim.cmd([[
 let s:comment_map = { 
-    \   "awk": ';',
+    \   "awk": '#',
 		\   "beamer" : "%",
     \   "bash_profile": '#',
     \   "bashrc": '#',
