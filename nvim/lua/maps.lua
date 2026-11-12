@@ -287,7 +287,7 @@ au_m("FileType", PS, "postscr", function() map('n', '<C-o>', ':5sp %:r.log<CR>',
 -- === LaTeX === (((
 local TeX = api.nvim_create_augroup("TeXgroup", { clear = true })
 au_m("FileType", TeX, "tex", function()	map('n' , '<C-a>', ':!zathura<space>%:r.pdf<space>&<Enter><CR>', false) end)
-au_c("BufWritePost", TeX, "*.tex" , 'silent ! mycomp %')
+-- au_c("BufWritePost", TeX, "*.tex" , 'silent ! mycomp %')
 -- au_c("BufRead", TeX, "*.tex", "set indentexpr=<CR>")
 
 -- map('n', '<M-p>', ":silent ! pdflatex %<CR>")
@@ -387,8 +387,10 @@ au_m("FileType", Cg, {"c", "cpp"},  function() map('n', '<C-q>', '<C-\\><C-N>Aex
 
 -- === AWK === (((
 local Awk = api.nvim_create_augroup("Awkgroup", {clear = true})
-au_m("FileType", Awk, {"text", "d", "data"},  function() map('n', '<C-i>',  ':w<CR>:let @b = @%<CR>', false) end)
-au_m("FileType", Awk, {"text", "d", "data"},  function() map('n', '<M-i>',  ':w<CR>:let @b = @%<CR>', false) end)
+au_m("FileType", Awk, {"text", "d", "data", "tsv"},  function() map('n', '<C-i>',  ':w<CR>:let @b = @%<CR>', false) end)
+au_m("FileType", Awk, {"text", "d", "data", "tsv"},  function() map('n', '<M-i>',  ':w<CR>:let @b = @%<CR>', false) end)
+au_m("FileType", Awk, {"csv"},  function() map('n', '<C-i>',  ':w<CR>:let @b = "--csv " . @%<CR>', false) end)
+au_m("FileType", Awk, {"csv"},  function() map('n', '<M-i>',  ':w<CR>:let @b = "--csv " . @%<CR>', false) end)
 
 -- au_m("FileType", Awk, {"awk"},  function() map('n', '<M-t>',  ':w<CR>:let @1 = @%<CR>:vs<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igawk -f <C-\\><C-N>"1pA <C-\\><C-N>"2pa<CR><C-\\><C-N>gg<C-w>p', false) end)
 -- au_m("FileType", Awk, {"awk"},  function() map('n', '<M-c>',  ':w<CR>:let @1 = @%<CR>:sp<CR>:term<CR><Esc>:set wrap<CR>:set nornu nonu<CR>igawk -f <C-\\><C-N>"1pA <C-\\><C-N>"2pa<CR><C-\\><C-N>gg<C-w>p', false) end)
